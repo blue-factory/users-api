@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	pb "github.com/microapis/lib/proto"
+	pb "github.com/microapis/users-api/proto"
 	_ "github.com/lib/pq"
 )
 
