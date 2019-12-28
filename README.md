@@ -1,6 +1,6 @@
 # Users-API
 
-Microservice implemented in Golang that stores user information into postgres and Couch DB.
+Microservice implemented in Golang that stores user information into Postgres database.
 
 ## Table
 
