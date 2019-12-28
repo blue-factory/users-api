@@ -1,11 +1,14 @@
 # Base container for compile service
 FROM golang:alpine AS builder
 
+# Define service name
+ARG SVC=users-api
+
 # Install dependencies
 RUN apk add make
 
 # Go to builder workdir
-WORKDIR /go/src/github.com/microapis/users-api/
+WORKDIR /go/src/github.com/microapis/${SVC}/
 
 # Copy go modules files
 COPY go.mod .
@@ -27,14 +30,17 @@ RUN make linux
 # Base container for run service
 FROM alpine
 
+# Define service name
+ARG SVC=users-api
+
 # Go to workdir
-WORKDIR /src/users-api
+WORKDIR /src/${SVC}
 
 # Install dependencies
 RUN apk add --update ca-certificates wget
 
 # Copy binaries
-COPY --from=builder /go/src/github.com/microapis/users-api/bin/users-api /usr/bin/users-api
+COPY --from=builder /go/src/github.com/microapis/${SVC}/bin/${SVC} /usr/bin/${SVC}
 
 # # Copy goose migration tool and add permission
 # RUN wget https://raw.githubusercontent.com/microapis/lib/master/bin/goose -o /usr/bin/goose
@@ -48,10 +54,10 @@ COPY bin/goose /usr/bin/goose
 COPY bin/wait-db /usr/bin/wait-db
 
 # Copy all database migrations
-COPY database/migrations/* /src/users-api/migrations/
+COPY database/migrations/* /src/${SVC}/migrations/
 
 # Expose service port
 EXPOSE 5020
 
 # Run service
-CMD ["/bin/sh", "-l", "-c", "wait-db && cd /src/users-api/migrations/ && goose postgres ${POSTGRES_DSN} up && users-api"]
+CMD ["/bin/sh", "-l", "-c", "wait-db && cd /src/$SVC/migrations/ && goose postgres ${POSTGRES_DSN} up && $SVC"]
