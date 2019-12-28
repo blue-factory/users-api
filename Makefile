@@ -60,4 +60,12 @@ stop s:
 	@echo "[docker-compose] Stopping docker-compose..."
 	@docker-compose down
 
-.PHONY: clean c run r build b linux l docker d add-migration am migrations m compose co stop s
+clean-proto cp:
+	@echo "[clean-proto] Cleaning proto files..."
+	@rm -rf proto/*.pb.go || true
+
+proto pro: clean-proto
+	@echo "[proto] Generating proto file..."
+	@protoc --go_out=plugins=grpc:. ./proto/*.proto 
+
+.PHONY: clean c run r build b linux l add-migration am migrations m docker d docker-login dl push p compose co stop s clean-proto cp proto pro
