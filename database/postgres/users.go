@@ -49,8 +49,8 @@ func (us *UserStore) UserCreate(u *users.User) error {
 
 	sql, args, err := squirrel.
 		Insert("users").
-		Columns("email", "password").
-		Values(u.Email, u.Password).
+		Columns("email", "name", "password").
+		Values(u.Email, u.Name, u.Password).
 		Suffix("returning *").
 		PlaceholderFormat(squirrel.Dollar).
 		ToSql()

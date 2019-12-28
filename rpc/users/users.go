@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	pb "github.com/microapis/lib/proto"
+	pb "github.com/microapis/users-api/proto"
 	users "github.com/microapis/users-api"
 	"github.com/microapis/users-api/database"
 	"github.com/microapis/users-api/service"
@@ -25,8 +25,8 @@ func New(store database.Store) *Service {
 	}
 }
 
-// UserGet Gets a user by ID.
-func (us *Service) UserGet(ctx context.Context, gr *pb.UserGetRequest) (*pb.UserGetResponse, error) {
+// Get Gets a user by ID.
+func (us *Service) Get(ctx context.Context, gr *pb.UserGetRequest) (*pb.UserGetResponse, error) {
 	id := gr.GetUserId()
 	fmt.Println(fmt.Sprintf("[gRPC][UsersService][Get][Request] id = %v", id))
 	user, err := us.usersSvc.GetByID(id)
@@ -52,8 +52,8 @@ func (us *Service) UserGet(ctx context.Context, gr *pb.UserGetRequest) (*pb.User
 	return res, nil
 }
 
-// UserGetByEmail get a user by Email
-func (us *Service) UserGetByEmail(ctx context.Context, gr *pb.UserGetByEmailRequest) (*pb.UserGetByEmailResponse, error) {
+// GetByEmail get a user by Email
+func (us *Service) GetByEmail(ctx context.Context, gr *pb.UserGetByEmailRequest) (*pb.UserGetByEmailResponse, error) {
 	email := gr.GetEmail()
 	fmt.Println(fmt.Sprintf("[gRPC][UsersService][GetByEmail][Request] email = %v", email))
 
@@ -92,8 +92,8 @@ func (us *Service) UserGetByEmail(ctx context.Context, gr *pb.UserGetByEmailRequ
 	return res, nil
 }
 
-// UserCreate creates a new user into database.
-func (us *Service) UserCreate(ctx context.Context, gr *pb.UserCreateRequest) (*pb.UserCreateResponse, error) {
+// Create creates a new user into database.
+func (us *Service) Create(ctx context.Context, gr *pb.UserCreateRequest) (*pb.UserCreateResponse, error) {
 	fmt.Println(fmt.Sprintf("[gRPC][UsersService][Create][Request] data = %v", gr.GetData()))
 
 	email := gr.GetData().GetEmail()
@@ -111,6 +111,19 @@ func (us *Service) UserCreate(ctx context.Context, gr *pb.UserCreateRequest) (*p
 
 	_, err := us.usersSvc.GetByEmail(email)
 	if err != nil {
+		name := gr.GetData().GetName()
+		if name == "" {
+			fmt.Println(fmt.Sprintf("[gRPC][TenpoUsersService][Create][Error] %v", "name user param is empty"))
+			return &pb.UserCreateResponse{
+				Meta: nil,
+				Data: nil,
+				Error: &pb.Error{
+					Code:    400,
+					Message: "name user param is empty",
+				},
+			}, nil
+		}
+
 		password := gr.GetData().GetPassword()
 		if password == "" {
 			fmt.Println(fmt.Sprintf("[gRPC][UsersService][Create][Error] %v", "password user params is empty"))
@@ -139,6 +152,7 @@ func (us *Service) UserCreate(ctx context.Context, gr *pb.UserCreateRequest) (*p
 
 		user := &users.User{
 			Email:    email,
+			Name:     name,
 			Password: string(hashedPassword),
 		}
 
@@ -176,8 +190,8 @@ func (us *Service) UserCreate(ctx context.Context, gr *pb.UserCreateRequest) (*p
 	return res, nil
 }
 
-// UserVerifyPassword ...
-func (us *Service) UserVerifyPassword(ctx context.Context, gr *pb.UserVerifyPasswordRequest) (*pb.UserVerifyPasswordResponse, error) {
+// VerifyPassword ...
+func (us *Service) VerifyPassword(ctx context.Context, gr *pb.UserVerifyPasswordRequest) (*pb.UserVerifyPasswordResponse, error) {
 	fmt.Println(fmt.Sprintf("[gRPC][UsersService][VerifyPassword][Request] email = %v password = %v", gr.GetEmail(), gr.GetPassword()))
 	email := gr.GetEmail()
 	if email == "" {
@@ -236,8 +250,8 @@ func (us *Service) UserVerifyPassword(ctx context.Context, gr *pb.UserVerifyPass
 	return res, nil
 }
 
-// UserList return a collection of users.
-func (us *Service) UserList(ctx context.Context, gr *pb.UserListRequest) (*pb.UserListResponse, error) {
+// List return a collection of users.
+func (us *Service) List(ctx context.Context, gr *pb.UserListRequest) (*pb.UserListResponse, error) {
 	fmt.Println(fmt.Sprintf("[GRPC][UsersService][List][Request] empty = %v", ""))
 	//TODO(ca): check bdd connection
 	listedUsers, err := us.usersSvc.UserList()

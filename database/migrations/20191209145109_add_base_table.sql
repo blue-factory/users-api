@@ -2,6 +2,7 @@
 -- +goose StatementBegin
 CREATE TABLE users (
   id uuid primary key default gen_random_uuid() UNIQUE,
+  name varchar(255) NOT NULL,
   email varchar(255)  NOT NULL UNIQUE,
   password varchar(255) NOT NULL,
   created_at timestamptz default now(),
