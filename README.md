@@ -9,6 +9,7 @@ Microservice implemented in Golang that stores user information into postgres an
 ------------+--------------------------+-----------+----------+-------------------
  id         | uuid                     |           | not null | gen_random_uuid()
  email      | character varying(255)   |           | not null |
+ name       | character varying(255)   |           | not null |
  password   | character varying(255)   |           | not null |
  created_at | timestamp with time zone |           |          | now()
  updated_at | timestamp with time zone |           |          | now()
@@ -26,10 +27,11 @@ Triggers:
 message User {
   string id = 1;
   string email = 2;
-  string password = 3;
+  string name = 3;
+  string password = 4;
 
-  int64 created_at = 4;
-  int64 updated_at = 5;
+  int64 created_at = 5;
+  int64 updated_at = 6;
 }
 
 service UsersService {
