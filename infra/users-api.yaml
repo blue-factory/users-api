@@ -33,8 +33,6 @@ spec:
       labels:
         app: users-api
     spec:
-      nodeSelector:
-        service: general
       serviceAccountName: users-api
       containers:
         - name: users-api

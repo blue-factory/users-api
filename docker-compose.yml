@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 volumes:
   users-postgres-data:
@@ -6,7 +6,7 @@ volumes:
 
 services:
   #
-  # USERS SERVICE
+  # USERS API
   #
   users-postgres:
     container_name: users-postgres

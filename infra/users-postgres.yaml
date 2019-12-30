@@ -23,7 +23,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: '/mnt/data/users'
+    path: "/mnt/data/users"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -50,12 +50,10 @@ spec:
       labels:
         app: users-postgres
     spec:
-      nodeSelector:
-        service: databases
       containers:
         - name: users-postgres
           image: postgres:10.4
-          imagePullPolicy: 'IfNotPresent'
+          imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 5432
           envFrom:
