@@ -22,11 +22,11 @@ run r:
 	@echo "[running] Running service..."
 	@go run cmd/main.go
 
-build b:
+build b: proto
 	@echo "[build] Building service..."
 	@cd cmd && go build -o $(BIN)
 
-linux l:
+linux l: proto
 	@echo "[build-linux] Building service..."
 	@cd cmd && GOOS=linux GOARCH=amd64 go build -o $(BIN)
 
