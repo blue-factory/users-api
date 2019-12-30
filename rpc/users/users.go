@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	pb "github.com/microapis/users-api/proto"
 	users "github.com/microapis/users-api"
 	"github.com/microapis/users-api/database"
+	pb "github.com/microapis/users-api/proto"
 	"github.com/microapis/users-api/service"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -35,7 +35,7 @@ func (us *Service) Get(ctx context.Context, gr *pb.UserGetRequest) (*pb.UserGetR
 		return &pb.UserGetResponse{
 			Meta: nil,
 			Data: nil,
-			Error: &pb.Error{
+			Error: &pb.UserError{
 				Code:    500,
 				Message: err.Error(),
 			},
@@ -62,7 +62,7 @@ func (us *Service) GetByEmail(ctx context.Context, gr *pb.UserGetByEmailRequest)
 		return &pb.UserGetByEmailResponse{
 			Meta: nil,
 			Data: nil,
-			Error: &pb.Error{
+			Error: &pb.UserError{
 				Code:    400,
 				Message: "email user params empty",
 			},
@@ -75,7 +75,7 @@ func (us *Service) GetByEmail(ctx context.Context, gr *pb.UserGetByEmailRequest)
 		return &pb.UserGetByEmailResponse{
 			Meta: nil,
 			Data: nil,
-			Error: &pb.Error{
+			Error: &pb.UserError{
 				Code:    404,
 				Message: "user not found",
 			},
@@ -102,7 +102,7 @@ func (us *Service) Create(ctx context.Context, gr *pb.UserCreateRequest) (*pb.Us
 		return &pb.UserCreateResponse{
 			Meta: nil,
 			Data: nil,
-			Error: &pb.Error{
+			Error: &pb.UserError{
 				Code:    400,
 				Message: "email user param is empty",
 			},
@@ -117,7 +117,7 @@ func (us *Service) Create(ctx context.Context, gr *pb.UserCreateRequest) (*pb.Us
 			return &pb.UserCreateResponse{
 				Meta: nil,
 				Data: nil,
-				Error: &pb.Error{
+				Error: &pb.UserError{
 					Code:    400,
 					Message: "name user param is empty",
 				},
@@ -130,7 +130,7 @@ func (us *Service) Create(ctx context.Context, gr *pb.UserCreateRequest) (*pb.Us
 			return &pb.UserCreateResponse{
 				Meta: nil,
 				Data: nil,
-				Error: &pb.Error{
+				Error: &pb.UserError{
 					Code:    400,
 					Message: "password user params is empty",
 				},
@@ -143,7 +143,7 @@ func (us *Service) Create(ctx context.Context, gr *pb.UserCreateRequest) (*pb.Us
 			return &pb.UserCreateResponse{
 				Meta: nil,
 				Data: nil,
-				Error: &pb.Error{
+				Error: &pb.UserError{
 					Code:    500,
 					Message: "could not generate hashed password",
 				},
@@ -161,7 +161,7 @@ func (us *Service) Create(ctx context.Context, gr *pb.UserCreateRequest) (*pb.Us
 			return &pb.UserCreateResponse{
 				Meta: nil,
 				Data: nil,
-				Error: &pb.Error{
+				Error: &pb.UserError{
 					Code:    500,
 					Message: err.Error(),
 				},
@@ -180,7 +180,7 @@ func (us *Service) Create(ctx context.Context, gr *pb.UserCreateRequest) (*pb.Us
 	res := &pb.UserCreateResponse{
 		Meta: nil,
 		Data: nil,
-		Error: &pb.Error{
+		Error: &pb.UserError{
 			Code:    400,
 			Message: "user already exists",
 		},
@@ -198,7 +198,7 @@ func (us *Service) VerifyPassword(ctx context.Context, gr *pb.UserVerifyPassword
 		fmt.Println(fmt.Sprintf("[gRPC][UsersService][VerifyPassword][Error] %v", "email user param is empty"))
 		return &pb.UserVerifyPasswordResponse{
 			Valid: false,
-			Error: &pb.Error{
+			Error: &pb.UserError{
 				Code:    400,
 				Message: "email user param is empty",
 			},
@@ -210,7 +210,7 @@ func (us *Service) VerifyPassword(ctx context.Context, gr *pb.UserVerifyPassword
 		fmt.Println(fmt.Sprintf("[gRPC][UsersService][VerifyPassword][Error] %v", "password user param is empty"))
 		return &pb.UserVerifyPasswordResponse{
 			Valid: false,
-			Error: &pb.Error{
+			Error: &pb.UserError{
 				Code:    400,
 				Message: "password user param is empty",
 			},
@@ -222,7 +222,7 @@ func (us *Service) VerifyPassword(ctx context.Context, gr *pb.UserVerifyPassword
 		fmt.Println(fmt.Sprintf("[gRPC][UsersService][VerifyPassword][Error] %v", "user not found"))
 		return &pb.UserVerifyPasswordResponse{
 			Valid: false,
-			Error: &pb.Error{
+			Error: &pb.UserError{
 				Code:    404,
 				Message: "user not found",
 			},
@@ -234,7 +234,7 @@ func (us *Service) VerifyPassword(ctx context.Context, gr *pb.UserVerifyPassword
 		fmt.Println(fmt.Sprintf("[gRPC][UsersService][VerifyPassword][Error] %v", "invalid password"))
 		return &pb.UserVerifyPasswordResponse{
 			Valid: false,
-			Error: &pb.Error{
+			Error: &pb.UserError{
 				Code:    400,
 				Message: "invalid password",
 			},
@@ -259,7 +259,7 @@ func (us *Service) List(ctx context.Context, gr *pb.UserListRequest) (*pb.UserLi
 		fmt.Println(fmt.Sprintf("[GRPC][UsersService][List][Error] %v", err))
 		return &pb.UserListResponse{
 			Data: nil,
-			Error: &pb.Error{
+			Error: &pb.UserError{
 				Code:    500,
 				Message: err.Error(),
 			},
