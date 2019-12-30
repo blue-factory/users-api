@@ -26,7 +26,7 @@ build b: proto
 	@echo "[build] Building service..."
 	@cd cmd && go build -o $(BIN)
 
-linux l: proto
+linux l:
 	@echo "[build-linux] Building service..."
 	@cd cmd && GOOS=linux GOARCH=amd64 go build -o $(BIN)
 
