@@ -4,14 +4,12 @@ package proto;
 
 // ------------------- Base -------------------
 
-message Meta {}
+message UserMeta {}
 
-message Error {
+message UserError {
   int32 code = 1;
   string message = 2;
 }
-
-message Empty {}
 
 // ------------------- Users -------------------
 
@@ -45,8 +43,8 @@ message UserGetRequest {
 
 message UserGetResponse {
   User data = 1;
-  Meta meta = 2;
-  Error error = 3;
+  UserMeta meta = 2;
+  UserError error = 3;
 }
 
 message UserGetByEmailRequest {
@@ -55,8 +53,8 @@ message UserGetByEmailRequest {
 
 message UserGetByEmailResponse {
   User data = 1;
-  Meta meta = 2;
-  Error error = 3;
+  UserMeta meta = 2;
+  UserError error = 3;
 }
 
 message UserCreateRequest {
@@ -65,8 +63,8 @@ message UserCreateRequest {
 
 message UserCreateResponse {
   User data = 1;
-  Meta meta = 2;
-  Error error = 3;
+  UserMeta meta = 2;
+  UserError error = 3;
 }
 
 message UserVerifyPasswordRequest {
@@ -76,13 +74,13 @@ message UserVerifyPasswordRequest {
 
 message UserVerifyPasswordResponse {
   bool valid = 1;
-  Error error = 2;
+  UserError error = 2;
 }
 
 message UserListRequest {}
 
 message UserListResponse {
   repeated User data = 1;
-  Meta meta = 2;
-  Error error = 3;
+  UserMeta meta = 2;
+  UserError error = 3;
 }
