@@ -25,7 +25,7 @@ clean c:
 
 run r:
 	@echo "[running] Running service..."
-	@POSTGRES_DSN=$(POSTGRES_DSN) PORT=$(PORT) go run cmd/$(NAME)/main.go
+	@HOST=$(HOST) PORT=$(PORT) POSTGRES_DSN=$(POSTGRES_DSN) go run cmd/$(NAME)/main.go
 
 build b: proto
 	@echo "[build] Building service..."

@@ -14,7 +14,7 @@ import (
 )
 
 // Run ...
-func Run(port string, postgresDSN string) {
+func Run(address string, postgresDSN string) {
 	pgSvc, err := database.NewPostgres(postgresDSN)
 	if err != nil {
 		log.Println("PG DSN ", postgresDSN)
@@ -29,12 +29,12 @@ func Run(port string, postgresDSN string) {
 
 	log.Println("Starting Users service...")
 
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%v", port))
+	lis, err := net.Listen("tcp", address)
 	if err != nil {
 		log.Fatalf("Failed to list: %v", err)
 	}
 
-	log.Println(fmt.Sprintf("Users service, Listening on: %v", port))
+	log.Println(fmt.Sprintf("Users service, Listening on: %v", address))
 
 	if err := srv.Serve(lis); err != nil {
 		log.Fatalf("Fatal to serve: %v", err)
