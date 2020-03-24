@@ -19,18 +19,15 @@ service UserService {
   rpc Create(UserCreateRequest) returns (UserCreateResponse) {}
 	rpc VerifyPassword(UserVerifyPasswordRequest) returns (UserVerifyPasswordResponse)  {}
   rpc List(UserListRequest) returns (UserListResponse) {}
-
-  //
-  // TODO(ca): below methods are not implemented.
-  //
-  // rpc Update(UpdateRequest) returns (UpdateResponse) {}
-  // rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+  rpc Update(UserUpdateRequest) returns (UserUpdateResponse) {}
+  rpc Delete(UserDeleteRequest) returns (UserDeleteResponse) {}
 }
 
 message User {
 	string id = 1;
-	string email = 2;
-	string name = 3;
+
+	string name = 2;
+	string email = 3;
 	string password = 4;
 
 	int64 created_at = 5;
@@ -40,7 +37,6 @@ message User {
 message UserGetRequest {
 	string user_id = 1;
 }
-
 message UserGetResponse {
   User data = 1;
   UserMeta meta = 2;
@@ -50,7 +46,6 @@ message UserGetResponse {
 message UserGetByEmailRequest {
 	string email = 1;
 }
-
 message UserGetByEmailResponse {
   User data = 1;
   UserMeta meta = 2;
@@ -60,7 +55,6 @@ message UserGetByEmailResponse {
 message UserCreateRequest {
   User data = 1;
 }
-
 message UserCreateResponse {
   User data = 1;
   UserMeta meta = 2;
@@ -71,16 +65,34 @@ message UserVerifyPasswordRequest {
 	string email = 1;
 	string password = 2;
 }
-
 message UserVerifyPasswordResponse {
-  bool valid = 1;
-  UserError error = 2;
+  User data = 1;
+  UserMeta meta = 2;
+  UserError error = 3;
 }
 
 message UserListRequest {}
-
 message UserListResponse {
   repeated User data = 1;
+  UserMeta meta = 2;
+  UserError error = 3;
+}
+
+message UserUpdateRequest {
+  string user_id = 1;
+  User data = 2;
+}
+message UserUpdateResponse {
+  User data = 1;
+  UserMeta meta = 2;
+  UserError error = 3;
+}
+
+message UserDeleteRequest {
+  string user_id = 1;
+}
+message UserDeleteResponse {
+  User data = 1;
   UserMeta meta = 2;
   UserError error = 3;
 }

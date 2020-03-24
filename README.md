@@ -21,7 +21,7 @@ Triggers:
     update_users_update_at BEFORE UPDATE ON users FOR EACH ROW EXECUTE PROCEDURE update_updated_at_column()
 ```
 
-## GRPC Service
+## gRPC Service
 
 ```go
 message User {
@@ -40,21 +40,31 @@ service UsersService {
   rpc Create(CreateRequest) returns (CreateResponse) {}
   rpc VerifyPassword(VerifyPasswordRequest) returns (VerifyPasswordResponse)  {}
   rpc List(ListRequest) returns (ListResponse) {}
-
-  // TODO(ca): below methods are not implemented.
-  // rpc Update(UpdateRequest) returns (UpdateResponse) {}
-  // rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+  rpc Update(UpdateRequest) returns (UpdateResponse) {}
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {}
 }
 ```
 
+## Environments Values
+
+`PORT`: define users service port.
+
+`HOST`: define users service host.
+
+`POSTGRES_DSN`: define postgres database connection DSN.
+
 ## Commands (Development)
 
-`make build`: build user service for osx.
+`make build`: build users service for osx.
 
-`make linux`: build user service for linux os.
+`make linux`: build users service for linux os.
 
 `make docker`: build docker.
 
-`docker run -it -p 5020:5020 users-api`: run docker.
+`make compose`: start docker-docker.
 
-`PORT=<port> POSTGRES_DSN=<postgres_dsn> ./bin/users-api`: run user service.
+`make stop`: stop docker-docker.
+
+`make run`: run users service.
+
+`docker run -it -p 5020:5020 users-api`: run docker.

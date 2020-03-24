@@ -1,8 +1,6 @@
 package service
 
 import (
-	"errors"
-
 	users "github.com/microapis/users-api"
 	"github.com/microapis/users-api/database"
 )
@@ -43,13 +41,13 @@ func (us *Users) Create(u *users.User) error {
 }
 
 // Update ...
-func (us *Users) Update(*users.User) error {
-	return errors.New("methods is not implemented")
+func (us *Users) Update(u *users.User) error {
+	return us.Store.Update(u)
 }
 
 // Delete ...
-func (us *Users) Delete(*users.User) error {
-	return errors.New("method is not implemented")
+func (us *Users) Delete(u *users.User) error {
+	return us.Store.Delete(u)
 }
 
 // UserList ...

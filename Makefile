@@ -9,10 +9,15 @@
 # Internal variables
 #
 VERSION=0.0.6
-SVC=users-api
+NAME=users
+SVC=$(NAME)-api
 BIN_PATH=$(PWD)/bin
 BIN=$(BIN_PATH)/$(SVC)
 REGISTRY_URL=$(DOCKER_USER)
+
+HOST=localhost
+PORT=5020
+POSTGRES_DSN=postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable
 
 clean c:
 	@echo "[clean] Cleaning bin folder..."
@@ -20,15 +25,15 @@ clean c:
 
 run r:
 	@echo "[running] Running service..."
-	@go run cmd/main.go
+	@POSTGRES_DSN=$(POSTGRES_DSN) PORT=$(PORT) go run cmd/$(NAME)/main.go
 
 build b: proto
 	@echo "[build] Building service..."
-	@cd cmd && go build -o $(BIN)
+	@cd cmd/$(NAME) && go build -o $(BIN)
 
 linux l:
 	@echo "[build-linux] Building service..."
-	@cd cmd && GOOS=linux GOARCH=amd64 go build -o $(BIN)
+	@cd cmd/$(NAME) && GOOS=linux GOARCH=amd64 go build -o $(BIN)
 
 add-migration am: 
 	@echo "[add-migration] Adding migration"
@@ -66,6 +71,10 @@ clean-proto cp:
 
 proto pro: clean-proto
 	@echo "[proto] Generating proto file..."
-	@protoc --go_out=plugins=grpc:. ./proto/*.proto 
+	@protoc -I proto -I $(GOPATH)/src --go_out=plugins=grpc:./proto ./proto/*.proto 
 
-.PHONY: clean c run r build b linux l add-migration am migrations m docker d docker-login dl push p compose co stop s clean-proto cp proto pro
+test t:
+	@echo "[test] Testing $(NAME)..."
+	@HOST=$(HOST) PORT=$(PORT) POSTGRES_DSN=$(POSTGRES_DSN) go test -count=1 -v ./client/$(NAME)_test.go
+
+.PHONY: clean c run r build b linux l add-migration am migrations m docker d docker-login dl push p compose co stop s clean-proto cp proto pro test t

@@ -21,19 +21,13 @@ type User struct {
 
 // Service ...
 type Service interface {
-	Getter
-	Create(*User) error
-	UserList() ([]*User, error)
-
-	// TODO(ca): below methods are not implemented
-	Update(*User) error
-	Delete(*User) error
-}
-
-// Getter ...
-type Getter interface {
 	GetByID(id string) (*User, error)
 	GetByEmail(email string) (*User, error)
+	Create(*User) error
+	// VerifyPassword
+	UserList() ([]*User, error)
+	Update(*User) error
+	Delete(*User) error
 }
 
 // Query ...
@@ -57,6 +51,7 @@ func (u *User) ToProto() *pb.User {
 // FromProto ...
 func (u *User) FromProto(uu *pb.User) *User {
 	u.ID = uu.Id
+
 	u.Email = uu.Email
 	u.Name = uu.Name
 	u.Password = uu.Password

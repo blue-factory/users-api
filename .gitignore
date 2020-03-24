@@ -1,4 +1,4 @@
 .env
-bin/users-api
+bin/auth-api
 bin/wait-db
 bin/goose

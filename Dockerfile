@@ -42,14 +42,6 @@ RUN apk add --update ca-certificates wget
 # Copy binaries
 COPY --from=builder /go/src/github.com/microapis/${SVC}/bin/${SVC} /usr/bin/${SVC}
 
-# # Copy goose migration tool and add permission
-# RUN wget https://raw.githubusercontent.com/microapis/lib/master/bin/goose -o /usr/bin/goose
-# RUN chmod 777 /usr/bin/goose
-
-# # Copy wait-db util and add permission
-# RUN wget https://raw.githubusercontent.com/microapis/lib/master/bin/wait-db -o /usr/bin/wait-db
-# RUN chmod 777 /usr/bin/wait-db
-
 COPY bin/goose /usr/bin/goose
 COPY bin/wait-db /usr/bin/wait-db
 

@@ -1,11 +1,13 @@
 package postgres
 
 import (
+	"database/sql"
 	"errors"
+	"time"
 
 	"github.com/Masterminds/squirrel"
-	users "github.com/microapis/users-api"
 	"github.com/jmoiron/sqlx"
+	users "github.com/microapis/users-api"
 )
 
 // UserStore ...
@@ -93,4 +95,30 @@ func (us *UserStore) UserList() ([]*users.User, error) {
 	}
 
 	return uu, nil
+}
+
+// Update ...
+func (us *UserStore) Update(u *users.User) error {
+	sql, args, err := squirrel.Update("users").Set("email", u.Email).Set("name", u.Name).Set("password", u.Password).Where("id = ?", u.ID).Suffix("returning *").PlaceholderFormat(squirrel.Dollar).ToSql()
+
+	if err != nil {
+		return err
+	}
+
+	row := us.Store.QueryRowx(sql, args...)
+	return row.StructScan(u)
+}
+
+// Delete ...
+func (us *UserStore) Delete(u *users.User) error {
+	row := us.Store.QueryRowx("update users set deleted_at = $1 where id = $2 returning *", time.Now(), u.ID)
+
+	if err := row.StructScan(u); err != nil {
+		if err == sql.ErrNoRows {
+			return nil
+		}
+		return err
+	}
+
+	return nil
 }

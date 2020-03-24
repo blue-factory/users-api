@@ -1,9 +1,9 @@
 package database
 
 import (
+	"github.com/jmoiron/sqlx"
 	users "github.com/microapis/users-api"
 	"github.com/microapis/users-api/database/postgres"
-	"github.com/jmoiron/sqlx"
 )
 
 // Store ...
@@ -11,10 +11,8 @@ type Store interface {
 	UserGet(*users.Query) (*users.User, error)
 	UserCreate(*users.User) error
 	UserList() ([]*users.User, error)
-
-	// TODO(ca): below methods are not implemented
-	// Update(*users.User) error
-	// Delete(*users.User) error
+	Update(*users.User) error
+	Delete(*users.User) error
 }
 
 // NewPostgres ...
