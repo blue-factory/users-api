@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"errors"
-	"log"
 
 	users "github.com/microapis/users-api"
 	pb "github.com/microapis/users-api/proto"
@@ -16,17 +15,17 @@ type Client struct {
 }
 
 // New ...
-func New(address string) *Client {
+func New(address string) (*Client, error) {
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
-		log.Fatal("couldn't connect to users server", err)
+		return nil, err
 	}
 
 	c := pb.NewUserServiceClient(conn)
 
 	return &Client{
 		Client: c,
-	}
+	}, nil
 }
 
 // Get ...

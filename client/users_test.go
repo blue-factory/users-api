@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"reflect"
 	"testing"
@@ -26,18 +27,6 @@ func before() (string, string, error) {
 		return "", "", err
 	}
 
-	postgresDSN := os.Getenv("POSTGRES_DSN")
-	if postgresDSN == "" {
-		err := fmt.Errorf(fmt.Sprintf("Create: missing env variable POSTGRES_DSN, failed with %s value", postgresDSN))
-		return "", "", err
-	}
-
-	// // run users server
-	// go func() {
-	// 	usersRun.Run(port, postgresDSN)
-	// }()
-	// time.Sleep(1 * time.Second)
-
 	return host, port, nil
 }
 
@@ -48,7 +37,10 @@ func TestCreate(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	us := usersClient.New(host + ":" + port)
+	us, err := usersClient.New(host + ":" + port)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	randomUUID := uuid.New()
 
@@ -153,7 +145,10 @@ func TestGet(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	us := usersClient.New(host + ":" + port)
+	us, err := usersClient.New(host + ":" + port)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	randomUUID := uuid.New()
 
@@ -221,7 +216,10 @@ func TestGetByEmail(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	us := usersClient.New(host + ":" + port)
+	us, err := usersClient.New(host + ":" + port)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	randomUUID := uuid.New()
 
@@ -290,7 +288,10 @@ func TestVerifyPassword(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	us := usersClient.New(host + ":" + port)
+	us, err := usersClient.New(host + ":" + port)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	randomUUID := uuid.New()
 
@@ -347,7 +348,10 @@ func TestUpdate(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	us := usersClient.New(host + ":" + port)
+	us, err := usersClient.New(host + ":" + port)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	randomUUID := uuid.New()
 
@@ -433,7 +437,10 @@ func TestDelete(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	us := usersClient.New(host + ":" + port)
+	us, err := usersClient.New(host + ":" + port)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	randomUUID := uuid.New()
 
@@ -474,7 +481,10 @@ func TestList(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	us := usersClient.New(host + ":" + port)
+	us, err := usersClient.New(host + ":" + port)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	randomUUID := uuid.New()
 
