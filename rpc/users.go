@@ -1,4 +1,4 @@
-package userssvc
+package rpc
 
 import (
 	"context"
@@ -307,8 +307,9 @@ func (us *Service) Update(ctx context.Context, gr *pb.UserUpdateRequest) (*pb.Us
 	email := gr.GetData().GetEmail()
 	name := gr.GetData().GetName()
 	password := gr.GetData().GetPassword()
+	verified := gr.GetData().GetVerified()
 
-	if email == "" && name == "" && password == "" {
+	if email == "" && name == "" && password == "" && verified == false {
 		fmt.Println(fmt.Sprintf("[gRPC][Users][Update][Error] %v", err))
 		return &pb.UserUpdateResponse{
 			Data: nil,
@@ -339,6 +340,9 @@ func (us *Service) Update(ctx context.Context, gr *pb.UserUpdateRequest) (*pb.Us
 			}, nil
 		}
 		user.Password = string(hashedPassword)
+	}
+	if verified {
+		user.Verified = true
 	}
 
 	if err := us.usersSvc.Update(user); err != nil {

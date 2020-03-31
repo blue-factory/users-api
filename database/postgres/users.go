@@ -48,7 +48,6 @@ func (us *UserStore) UserGet(q *users.Query) (*users.User, error) {
 
 // UserCreate ...
 func (us *UserStore) UserCreate(u *users.User) error {
-
 	sql, args, err := squirrel.
 		Insert("users").
 		Columns("email", "name", "password").
@@ -99,7 +98,7 @@ func (us *UserStore) UserList() ([]*users.User, error) {
 
 // Update ...
 func (us *UserStore) Update(u *users.User) error {
-	sql, args, err := squirrel.Update("users").Set("email", u.Email).Set("name", u.Name).Set("password", u.Password).Where("id = ?", u.ID).Suffix("returning *").PlaceholderFormat(squirrel.Dollar).ToSql()
+	sql, args, err := squirrel.Update("users").Set("email", u.Email).Set("name", u.Name).Set("password", u.Password).Set("verified", u.Verified).Where("id = ?", u.ID).Suffix("returning *").PlaceholderFormat(squirrel.Dollar).ToSql()
 
 	if err != nil {
 		return err

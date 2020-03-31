@@ -5,6 +5,7 @@ CREATE TABLE users (
   name varchar(255) NOT NULL,
   email varchar(255)  NOT NULL UNIQUE,
   password varchar(255) NOT NULL,
+  verified BOOLEAN NOT NULL DEFAULT FALSE,
   created_at timestamptz default now(),
   updated_at timestamptz default now(),
   deleted_at timestamptz

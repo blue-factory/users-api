@@ -131,6 +131,12 @@ func TestCreate(t *testing.T) {
 		return
 	}
 
+	expectedBool := newUser.Verified
+	if false != expectedBool {
+		t.Errorf("Create: newUser.Verified(\"\") failed, expected %v, got %v", expectedBool, false)
+		return
+	}
+
 	// Delete created user
 	err = us.Delete(newUser.ID)
 	if err != nil {
@@ -199,6 +205,12 @@ func TestGet(t *testing.T) {
 	expected = getUser.Name
 	if newUser.Name != expected {
 		t.Errorf("TestGet: getUser.Name(\"\") failed, expected %v, got %v", expected, newUser.Name)
+		return
+	}
+
+	expectedBool := getUser.Verified
+	if false != expectedBool {
+		t.Errorf("TestGet: getUser.Verified(\"\") failed, expected %v, got %v", expectedBool, false)
 		return
 	}
 
@@ -271,6 +283,12 @@ func TestGetByEmail(t *testing.T) {
 	expected = getUserByEmail.Name
 	if newUser.Name != expected {
 		t.Errorf("TestGetByEmail: getUserByEmail.Name(\"\") failed, expected %v, got %v", expected, newUser.Name)
+		return
+	}
+
+	expectedBool := getUserByEmail.Verified
+	if false != expectedBool {
+		t.Errorf("TestGetByEmail: getUserByEmail.Verified(\"\") failed, expected %v, got %v", expectedBool, false)
 		return
 	}
 
@@ -395,6 +413,7 @@ func TestUpdate(t *testing.T) {
 		Name:     "update_" + newUser.Name,
 		Email:    "update_" + newUser.Email,
 		Password: "update_" + newUser.Password,
+		Verified: true,
 	}
 
 	updatedUser, err := us.Update(newUser.ID, updateUser)
@@ -418,6 +437,12 @@ func TestUpdate(t *testing.T) {
 	expected = updatedUser.Email
 	if updateUser.Email != expected {
 		t.Errorf("TestUpdate: updatedUser.Email(\"\") failed, expected %v, got %v", expected, updateUser.Email)
+		return
+	}
+
+	expectedBool := updatedUser.Verified
+	if true != expectedBool {
+		t.Errorf("TestUpdate: updatedUser.Verified(\"\") failed, expected %v, got %v", expectedBool, true)
 		return
 	}
 

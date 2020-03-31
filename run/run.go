@@ -8,7 +8,7 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/microapis/users-api/database"
 	pb "github.com/microapis/users-api/proto"
-	usersSvc "github.com/microapis/users-api/rpc/users"
+	"github.com/microapis/users-api/rpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -22,7 +22,7 @@ func Run(address string, postgresDSN string) {
 	}
 
 	srv := grpc.NewServer()
-	svc := usersSvc.New(pgSvc)
+	svc := rpc.New(pgSvc)
 
 	pb.RegisterUserServiceServer(srv, svc)
 	reflection.Register(srv)
