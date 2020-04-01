@@ -13,7 +13,7 @@ type User struct {
 	Email    string `json:"email,omitempty" db:"email"`
 	Name     string `json:"name,omitempty" db:"name"`
 	Password string `json:"password,omitempty" db:"password"`
-	Verified bool   `json:"verified,omitempty" db:"verified"`
+	Verified bool   `json:"verified" db:"verified"`
 
 	CreatedAt time.Time  `json:"created_at,omitempty" db:"created_at"`
 	UpdatedAt time.Time  `json:"updated_at,omitempty" db:"updated_at"`
