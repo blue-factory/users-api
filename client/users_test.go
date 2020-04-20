@@ -1,4 +1,4 @@
-package client
+package usersclient_test
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 
 	"github.com/google/uuid"
 	users "github.com/microapis/users-api"
-	usersClient "github.com/microapis/users-api/client"
+	usersclient "github.com/microapis/users-api/client"
 )
 
 // TODO(ca): should implements code for validate createdAt and updateAt attrs values.
@@ -37,7 +37,7 @@ func TestCreate(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	us, err := usersClient.New(host + ":" + port)
+	client, err := usersclient.New(host + ":" + port)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -46,24 +46,24 @@ func TestCreate(t *testing.T) {
 
 	// Test create with empty values for new user
 	user := &users.User{}
-	_, err = us.Create(user)
+	_, err = client.Create(user)
 	if err != nil && err.Error() != "invalid name" {
-		t.Errorf("Create: us.Create() error msg: %s", err.Error())
+		t.Errorf("Create: client.Create() error msg: %s", err.Error())
 	}
 	if err == nil {
-		t.Errorf("Create: us.Create() invalid error: %s", err.Error())
+		t.Errorf("Create: client.Create() invalid error: %s", err.Error())
 	}
 
 	// Test create with invalid name new user
 	user = &users.User{
 		Name: "",
 	}
-	_, err = us.Create(user)
+	_, err = client.Create(user)
 	if err != nil && err.Error() != "invalid name" {
-		t.Errorf("Create: us.Create(user) failed: %s", err.Error())
+		t.Errorf("Create: client.Create(user) failed: %s", err.Error())
 	}
 	if err == nil {
-		t.Errorf("Create: us.Create(user) failed: %s", err.Error())
+		t.Errorf("Create: client.Create(user) failed: %s", err.Error())
 	}
 
 	// Test create invalid email new user
@@ -71,12 +71,12 @@ func TestCreate(t *testing.T) {
 		Name:  "fake_user",
 		Email: "",
 	}
-	_, err = us.Create(user)
+	_, err = client.Create(user)
 	if err != nil && err.Error() != "invalid email" {
-		t.Errorf("Create: us.Create(user) failed: %s", err.Error())
+		t.Errorf("Create: client.Create(user) failed: %s", err.Error())
 	}
 	if err == nil {
-		t.Errorf("Create: us.Create(user) failed: %s", err.Error())
+		t.Errorf("Create: client.Create(user) failed: %s", err.Error())
 	}
 
 	// Test create invalid password new user
@@ -85,12 +85,12 @@ func TestCreate(t *testing.T) {
 		Email:    "fake_email_" + randomUUID.String(),
 		Password: "",
 	}
-	_, err = us.Create(user)
+	_, err = client.Create(user)
 	if err != nil && err.Error() != "invalid password" {
-		t.Errorf("Create: us.Create(user) failed: %s", err.Error())
+		t.Errorf("Create: client.Create(user) failed: %s", err.Error())
 	}
 	if err == nil {
-		t.Errorf("Create: us.Create(user) failed: %s", err.Error())
+		t.Errorf("Create: client.Create(user) failed: %s", err.Error())
 	}
 
 	// Test create valid new user
@@ -101,9 +101,9 @@ func TestCreate(t *testing.T) {
 	}
 
 	// Create new user
-	newUser, err := us.Create(user)
+	newUser, err := client.Create(user)
 	if err != nil {
-		t.Errorf("Create: us.Create(user) failed: %s", err.Error())
+		t.Errorf("Create: client.Create(user) failed: %s", err.Error())
 		return
 	}
 
@@ -138,7 +138,7 @@ func TestCreate(t *testing.T) {
 	}
 
 	// Delete created user
-	err = us.Delete(newUser.ID)
+	err = client.Delete(newUser.ID)
 	if err != nil {
 		t.Errorf("Create: failed at Delete created user err=%v", err)
 	}
@@ -151,7 +151,7 @@ func TestGet(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	us, err := usersClient.New(host + ":" + port)
+	client, err := usersclient.New(host + ":" + port)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -165,22 +165,22 @@ func TestGet(t *testing.T) {
 	}
 
 	// Create new user
-	newUser, err := us.Create(user)
+	newUser, err := client.Create(user)
 	if err != nil {
-		t.Errorf("TestGet: us.Create(user) failed: %s", err.Error())
+		t.Errorf("TestGet: client.Create(user) failed: %s", err.Error())
 		return
 	}
 
 	// Test Get with invalid param
-	getUser, err := us.Get("")
+	getUser, err := client.Get("")
 	if err == nil {
-		t.Errorf("TestGet: us.Get(id) failed: %s", err.Error())
+		t.Errorf("TestGet: client.Get(id) failed: %s", err.Error())
 	}
 
 	// Test Get new user
-	getUser, err = us.Get(newUser.ID)
+	getUser, err = client.Get(newUser.ID)
 	if err != nil {
-		t.Errorf("TestGet: us.Get(id) failed: %s", err.Error())
+		t.Errorf("TestGet: client.Get(id) failed: %s", err.Error())
 		return
 	}
 
@@ -215,7 +215,7 @@ func TestGet(t *testing.T) {
 	}
 
 	// Delete created user
-	err = us.Delete(newUser.ID)
+	err = client.Delete(newUser.ID)
 	if err != nil {
 		t.Errorf("TestGet: failed at Delete creaded user err=%v", err)
 	}
@@ -228,7 +228,7 @@ func TestGetByEmail(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	us, err := usersClient.New(host + ":" + port)
+	client, err := usersclient.New(host + ":" + port)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -243,22 +243,22 @@ func TestGetByEmail(t *testing.T) {
 	}
 
 	// Create new user
-	newUser, err := us.Create(user)
+	newUser, err := client.Create(user)
 	if err != nil {
-		t.Errorf("TestGetByEmail: us.Create(user) failed: %s", err.Error())
+		t.Errorf("TestGetByEmail: client.Create(user) failed: %s", err.Error())
 		return
 	}
 
 	// Test TestGetByEmail with invalid param
-	getUserByEmail, err := us.GetByEmail("")
+	getUserByEmail, err := client.GetByEmail("")
 	if err == nil {
-		t.Errorf("TestGetByEmail: us.GetByEmail() failed: %s", err.Error())
+		t.Errorf("TestGetByEmail: client.GetByEmail() failed: %s", err.Error())
 	}
 
 	// Test TestGetByEmail new user
-	getUserByEmail, err = us.GetByEmail(newUser.Email)
+	getUserByEmail, err = client.GetByEmail(newUser.Email)
 	if err != nil {
-		t.Errorf("TestGetByEmail: us.GetByEmail(email) failed: %s", err.Error())
+		t.Errorf("TestGetByEmail: client.GetByEmail(email) failed: %s", err.Error())
 		return
 	}
 
@@ -293,7 +293,7 @@ func TestGetByEmail(t *testing.T) {
 	}
 
 	// Delete created user
-	err = us.Delete(getUserByEmail.ID)
+	err = client.Delete(getUserByEmail.ID)
 	if err != nil {
 		t.Errorf("TestGetByEmail: failed at Delete creaded user err=%v", err)
 	}
@@ -306,7 +306,7 @@ func TestVerifyPassword(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	us, err := usersClient.New(host + ":" + port)
+	client, err := usersclient.New(host + ":" + port)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -321,39 +321,39 @@ func TestVerifyPassword(t *testing.T) {
 	}
 
 	// Create new user
-	newUser, err := us.Create(user)
+	newUser, err := client.Create(user)
 	if err != nil {
-		t.Errorf("TestVerifyPassword: us.Create(user) failed: %s", err.Error())
+		t.Errorf("TestVerifyPassword: client.Create(user) failed: %s", err.Error())
 		return
 	}
 
 	// Test verifyPasswordUser with invalid email param
-	err = us.VerifyPassword("", user.Password)
+	err = client.VerifyPassword("", user.Password)
 	if err != nil && err.Error() != "invalid email" {
-		t.Errorf(`TestVerifyPassword: us.VerifyPassword("", user.Password) failed: %s`, err.Error())
+		t.Errorf(`TestVerifyPassword: client.VerifyPassword("", user.Password) failed: %s`, err.Error())
 	}
 	if err == nil {
-		t.Errorf(`TestVerifyPassword: us.VerifyPassword("", user.Password) failed: %s`, err.Error())
+		t.Errorf(`TestVerifyPassword: client.VerifyPassword("", user.Password) failed: %s`, err.Error())
 	}
 
 	// Test verifyPasswordUser with invalid password param
-	err = us.VerifyPassword(user.Email, "")
+	err = client.VerifyPassword(user.Email, "")
 	if err != nil && err.Error() != "invalid password" {
-		t.Errorf(`TestVerifyPassword: us.VerifyPassword(email, "") failed: %s`, err.Error())
+		t.Errorf(`TestVerifyPassword: client.VerifyPassword(email, "") failed: %s`, err.Error())
 	}
 	if err == nil {
-		t.Errorf(`TestVerifyPassword: us.VerifyPassword(email, "") failed: %s`, err.Error())
+		t.Errorf(`TestVerifyPassword: client.VerifyPassword(email, "") failed: %s`, err.Error())
 	}
 
 	// Test verifyPasswordUser with new user
-	err = us.VerifyPassword(user.Email, user.Password)
+	err = client.VerifyPassword(user.Email, user.Password)
 	if err != nil {
-		t.Errorf("TestVerifyPassword: us.VerifyPassword(email, password) failed: %s", err.Error())
+		t.Errorf("TestVerifyPassword: client.VerifyPassword(email, password) failed: %s", err.Error())
 		return
 	}
 
 	// Delete created user
-	err = us.Delete(newUser.ID)
+	err = client.Delete(newUser.ID)
 	if err != nil {
 		t.Errorf("TestVerifyPassword: failed at Delete creaded user err=%v", err)
 	}
@@ -366,7 +366,7 @@ func TestUpdate(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	us, err := usersClient.New(host + ":" + port)
+	client, err := usersclient.New(host + ":" + port)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -381,29 +381,29 @@ func TestUpdate(t *testing.T) {
 	}
 
 	// Create new user
-	newUser, err := us.Create(user)
+	newUser, err := client.Create(user)
 	if err != nil {
-		t.Errorf("TestUpdate: us.Create(user) failed: %s", err.Error())
+		t.Errorf("TestUpdate: client.Create(user) failed: %s", err.Error())
 		return
 	}
 
 	// Update user with invalid userID
 	updateUser := &users.User{}
-	_, err = us.Update("", updateUser)
+	_, err = client.Update("", updateUser)
 	if err != nil && err.Error() != "invalid ID" {
-		t.Errorf("TestUpdate: us.Update(id, user) failed: %s", err.Error())
+		t.Errorf("TestUpdate: client.Update(id, user) failed: %s", err.Error())
 		return
 	}
 	if err == nil {
-		t.Errorf("TestUpdate: us.Update(id, user) failed: %s", err.Error())
+		t.Errorf("TestUpdate: client.Update(id, user) failed: %s", err.Error())
 		return
 	}
 
 	// Update user with empty values
 	updateUser = &users.User{}
-	_, err = us.Update(newUser.ID, updateUser)
+	_, err = client.Update(newUser.ID, updateUser)
 	if err == nil {
-		t.Errorf("TestUpdate: us.Update(id, user) failed: %s", err.Error())
+		t.Errorf("TestUpdate: client.Update(id, user) failed: %s", err.Error())
 		return
 	}
 
@@ -416,9 +416,9 @@ func TestUpdate(t *testing.T) {
 		Verified: true,
 	}
 
-	updatedUser, err := us.Update(newUser.ID, updateUser)
+	updatedUser, err := client.Update(newUser.ID, updateUser)
 	if err != nil {
-		t.Errorf("TestUpdate: us.Update(id, user) failed: %s", err.Error())
+		t.Errorf("TestUpdate: client.Update(id, user) failed: %s", err.Error())
 		return
 	}
 
@@ -449,7 +449,7 @@ func TestUpdate(t *testing.T) {
 	// TODO(ca): check if user password has changed
 
 	// Delete created user
-	err = us.Delete(newUser.ID)
+	err = client.Delete(newUser.ID)
 	if err != nil {
 		t.Errorf("TestUpdate: failed at Delete creaded user err=%v", err)
 	}
@@ -462,7 +462,7 @@ func TestDelete(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	us, err := usersClient.New(host + ":" + port)
+	client, err := usersclient.New(host + ":" + port)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -477,25 +477,25 @@ func TestDelete(t *testing.T) {
 	}
 
 	// Create new user
-	newUser, err := us.Create(user)
+	newUser, err := client.Create(user)
 	if err != nil {
-		t.Errorf("TestDelete: us.Create(user) failed: %s", err.Error())
+		t.Errorf("TestDelete: client.Create(user) failed: %s", err.Error())
 		return
 	}
 
 	// Delete created user
-	err = us.Delete(newUser.ID)
+	err = client.Delete(newUser.ID)
 	if err != nil {
 		t.Errorf("TestDelete: failed at Delete creaded user err=%v", err)
 	}
 
 	// Test get deleted user
-	_, err = us.Get(newUser.ID)
+	_, err = client.Get(newUser.ID)
 	if err != nil && err.Error() != "sql: no rows in result set" {
-		t.Errorf("TestDelete: us.Get(id) failed: %s", err.Error())
+		t.Errorf("TestDelete: client.Get(id) failed: %s", err.Error())
 	}
 	if err == nil {
-		t.Errorf("TestDelete: us.Get(id) failed: %s", err.Error())
+		t.Errorf("TestDelete: client.Get(id) failed: %s", err.Error())
 	}
 }
 
@@ -506,7 +506,7 @@ func TestList(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 
-	us, err := usersClient.New(host + ":" + port)
+	client, err := usersclient.New(host + ":" + port)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -521,23 +521,23 @@ func TestList(t *testing.T) {
 	}
 
 	// Create new user
-	newUser, err := us.Create(user)
+	newUser, err := client.Create(user)
 	if err != nil {
-		t.Errorf("TestList: us.Create(user) failed: %s", err.Error())
+		t.Errorf("TestList: client.Create(user) failed: %s", err.Error())
 		return
 	}
 
 	// Get user list
-	list, err := us.List()
+	list, err := client.List()
 	if err != nil {
-		t.Errorf("TestList: us.List() failed: %s", err.Error())
+		t.Errorf("TestList: client.List() failed: %s", err.Error())
 		return
 	}
 
 	// Validate if repsonse is a slice
 	rt := reflect.TypeOf(list).Kind()
 	if rt.String() != "slice" {
-		t.Errorf("TestList: us.List() failed: %s", "response is not slice")
+		t.Errorf("TestList: client.List() failed: %s", "response is not slice")
 		return
 	}
 
@@ -551,12 +551,12 @@ func TestList(t *testing.T) {
 
 	// Check if finded new user is not null
 	if u == nil {
-		t.Errorf("TestList: failed: %s", "created user is not found inside us.List()")
+		t.Errorf("TestList: failed: %s", "created user is not found inside client.List()")
 		return
 	}
 
 	// Delete created user
-	err = us.Delete(newUser.ID)
+	err = client.Delete(newUser.ID)
 	if err != nil {
 		t.Errorf("TestList: failed at Delete creaded user err=%v", err)
 	}

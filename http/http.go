@@ -5,7 +5,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	uc "github.com/microapis/users-api/client"
+	usersclient "github.com/microapis/users-api/client"
 )
 
 // Response ...
@@ -16,11 +16,11 @@ type Response struct {
 }
 
 type handlerContext struct {
-	UsersClient *uc.Client
+	UsersClient *usersclient.Client
 }
 
 // Routes ...
-func Routes(r *mux.Router, uc *uc.Client) {
+func Routes(r *mux.Router, uc *usersclient.Client) {
 	s := r.PathPrefix("/api/v1/users").Subrouter()
 
 	// define context
