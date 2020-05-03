@@ -17,14 +17,15 @@ services:
       - 5432:5432
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
-  users-api:
-    image: microapis/users-api
-    ports:
-      - 5020:5020
-    environment:
-      - POSTGRES_DSN=postgres://postgres:postgres@users-postgres:5432/postgres?sslmode=disable
-      - PORT=5020
-    depends_on:
-      - users-postgres
-    links:
-      - users-postgres
+  # users-api:
+  #   container_name: users-api
+  #   build: .
+  #   ports:
+  #     - 5020:5020
+  #   environment:
+  #     - POSTGRES_DSN=postgres://postgres:postgres@users-postgres:5432/postgres?sslmode=disable
+  #     - PORT=5020
+  #   depends_on:
+  #     - users-postgres
+  #   links:
+  #     - users-postgres
