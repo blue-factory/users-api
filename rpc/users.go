@@ -19,9 +19,9 @@ type Service struct {
 }
 
 // New ...
-func New(store database.Store) *Service {
+func New(store database.Store, events *users.Events) *Service {
 	return &Service{
-		usersSvc: service.NewUsers(store),
+		usersSvc: service.NewUsers(store, events),
 	}
 }
 

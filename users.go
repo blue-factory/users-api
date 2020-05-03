@@ -62,3 +62,11 @@ func (u *User) FromProto(uu *pb.User) *User {
 
 	return u
 }
+
+// Events ...
+type Events struct {
+	BeforeCreate func() error
+	AfterCreate  func() error
+
+	// TODO(ca): implements all events
+}

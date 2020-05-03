@@ -6,15 +6,17 @@ import (
 )
 
 // NewUsers ...
-func NewUsers(store database.Store) *Users {
+func NewUsers(store database.Store, events *users.Events) *Users {
 	return &Users{
-		Store: store,
+		Store:  store,
+		Events: events,
 	}
 }
 
 // Users ...
 type Users struct {
-	Store database.Store
+	Store  database.Store
+	Events *users.Events
 }
 
 // GetByID ...
@@ -37,7 +39,28 @@ func (us *Users) GetByEmail(email string) (*users.User, error) {
 
 // Create ...
 func (us *Users) Create(u *users.User) error {
-	return us.Store.UserCreate(u)
+	// before create user event
+	if us.Events.BeforeCreate != nil {
+		err := us.Events.BeforeCreate()
+		if err != nil {
+			return err
+		}
+	}
+
+	err := us.Store.UserCreate(u)
+	if err != nil {
+		return err
+	}
+
+	// after create user event
+	if us.Events.AfterCreate != nil {
+		err := us.Events.AfterCreate()
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // Update ...

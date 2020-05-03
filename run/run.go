@@ -6,6 +6,7 @@ import (
 	"net"
 
 	_ "github.com/lib/pq"
+	"github.com/microapis/users-api"
 	"github.com/microapis/users-api/database"
 	pb "github.com/microapis/users-api/proto"
 	"github.com/microapis/users-api/rpc"
@@ -14,7 +15,7 @@ import (
 )
 
 // Run ...
-func Run(address string, postgresDSN string) {
+func Run(address string, postgresDSN string, events *users.Events) {
 	pgSvc, err := database.NewPostgres(postgresDSN)
 	if err != nil {
 		log.Println("PG DSN ", postgresDSN)
@@ -22,7 +23,7 @@ func Run(address string, postgresDSN string) {
 	}
 
 	srv := grpc.NewServer()
-	svc := rpc.New(pgSvc)
+	svc := rpc.New(pgSvc, events)
 
 	pb.RegisterUserServiceServer(srv, svc)
 	reflection.Register(srv)

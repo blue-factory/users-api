@@ -5,7 +5,8 @@ import (
 	"log"
 	"os"
 
-	users "github.com/microapis/users-api/run"
+	"github.com/microapis/users-api"
+	u "github.com/microapis/users-api/run"
 )
 
 func main() {
@@ -26,5 +27,10 @@ func main() {
 		log.Fatalln("missing env variable POSTGRES_DSN")
 	}
 
-	users.Run(addr, postgresDSN)
+	u.Run(addr, postgresDSN, &users.Events{
+		AfterCreate: func() error {
+			log.Println("Users: here in AfterCreate event")
+			return nil
+		},
+	})
 }
