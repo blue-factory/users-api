@@ -1,20 +1,20 @@
 #
 # SO variables
 #
-# DOCKER_USER
 # DOCKER_PASS
 #
 
 #
 # Internal variables
 #
-VERSION=0.1.0
-LAST_VERSION=0.0.8
+VERSION=0.1.1
+LAST_VERSION=0.1.0
 NAME=users
 SVC=$(NAME)-api
 BIN_PATH=$(PWD)/bin
 BIN=$(BIN_PATH)/$(SVC)
 REGISTRY_URL=$(DOCKER_USER)
+DOCKER_USER=microapis
 
 HOST=localhost
 PORT=5020
@@ -53,12 +53,14 @@ docker d:
 	
 docker-login dl:
 	@echo "[docker] Login to docker..."
-	@docker login -u $(DOCKER_USER) -p $(DOCKER_PASS)
+	@docker login -u $(DOCKER_USER) 
 
 push p: linux docker docker-login
 	@echo "[docker] pushing $(REGISTRY_URL)/$(SVC):$(VERSION)"
 	@docker tag $(SVC):$(VERSION) $(REGISTRY_URL)/$(SVC):$(VERSION)
 	@docker push $(REGISTRY_URL)/$(SVC):$(VERSION)
+	@docker tag $(SVC):$(VERSION) $(REGISTRY_URL)/$(SVC):latest
+	@docker push $(REGISTRY_URL)/$(SVC):latest
 
 compose co:
 	@echo "[docker-compose] Running docker-compose..."

@@ -1,4 +1,1 @@
 .env
-bin/auth-api
-bin/wait-db
-bin/goose

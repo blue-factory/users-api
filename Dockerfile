@@ -32,6 +32,7 @@ FROM alpine
 
 # Define service name
 ARG SVC=users-api
+ENV SVC=${SVC}
 
 # Go to workdir
 WORKDIR /src/${SVC}
@@ -52,4 +53,4 @@ COPY database/migrations/* /src/${SVC}/migrations/
 EXPOSE 5020
 
 # Run service
-CMD ["/bin/sh", "-l", "-c", "wait-db && cd /src/$SVC/migrations/ && goose postgres ${POSTGRES_DSN} up && $SVC"]
+CMD ["/bin/sh", "-l", "-c", "wait-db && cd /src/${SVC}/migrations/ && goose postgres ${POSTGRES_DSN} up && ${SVC}"]
