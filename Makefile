@@ -18,6 +18,7 @@ DOCKER_USER=microapis
 
 HOST=localhost
 PORT=5020
+HTTP_PORT=5025
 POSTGRES_DSN=postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable
 
 clean c:
@@ -30,6 +31,14 @@ run r:
 	 PORT=$(PORT) \
 	 POSTGRES_DSN=$(POSTGRES_DSN) \
 	 go run cmd/$(NAME)/main.go
+
+run-http rh:
+	@echo "[running-http] Running service..."
+	@HOST=$(HOST) \
+	 PORT=$(PORT) \
+	 HTTP_PORT=$(HTTP_PORT) \
+	 POSTGRES_DSN=$(POSTGRES_DSN) \
+	 go run cmd/$(NAME)-with-http/main.go
 
 build b: proto
 	@echo "[build] Building service..."
@@ -85,4 +94,4 @@ test t:
 	 PORT=$(PORT) \
 	 go test -count=1 -v ./client/$(NAME)_test.go
 
-.PHONY: clean c run r build b linux l add-migration am migrations m docker d docker-login dl push p compose co stop s clean-proto cp proto pro test t
+.PHONY: clean c run r run-http rh build b linux l add-migration am migrations m docker d docker-login dl push p compose co stop s clean-proto cp proto pro test t
