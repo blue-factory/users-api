@@ -44,8 +44,8 @@ func (u *User) ToProto() *pb.User {
 		Name:      u.Name,
 		Password:  u.Password,
 		Verified:  u.Verified,
-		CreatedAt: u.CreatedAt.UnixNano(),
-		UpdatedAt: u.UpdatedAt.UnixNano(),
+		CreatedAt: u.CreatedAt.Unix(),
+		UpdatedAt: u.UpdatedAt.Unix(),
 	}
 }
 
