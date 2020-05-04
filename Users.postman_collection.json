@@ -1,0 +1,243 @@
+{
+	"info": {
+		"_postman_id": "8b34b8cc-23c6-407c-a150-06264373d26b",
+		"name": "Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2d9a13ef-dcac-4703-8917-91acd0c66aa6",
+						"exec": [
+							"pm.test(\"Validate data.id value\", function () {",
+							"    var data = pm.response.json().data;",
+							"    pm.expect(data.id).to.not.eql(\"\");",
+							"});",
+							"",
+							"pm.test(\"Validate data.name value\", () => {",
+							"    const {data} = pm.response.json();",
+							"    pm.expect(data.name).to.not.eql(\"\");",
+							"});",
+							"",
+							"pm.test(\"Validate data.email value\", function () {",
+							"    var data = pm.response.json().data;",
+							"    pm.expect(data.email).to.not.eql(\"\");",
+							"});",
+							"",
+							"pm.test(\"Validate token.token value\", function () {",
+							"    var meta = pm.response.json().meta;",
+							"    pm.expect(meta.token).to.not.eql(\"\")",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate token.verification_token value\", function () {",
+							"    var meta = pm.response.json().meta;",
+							"    pm.expect(meta.verification_token).to.not.eql(\"\")",
+							"});",
+							"",
+							"var meta = pm.response.json().meta;",
+							"postman.setEnvironmentVariable(\"token\", meta.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"user\": {\n\t\t\"name\": \"camilo4\",\n\t\t\"email\": \"camilo.aku4@gmail.com\",\n\t\t\"password\": \"camilo4\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8888/api/v1/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2d9a13ef-dcac-4703-8917-91acd0c66aa6",
+						"exec": [
+							"pm.test(\"Validate data.id value\", function () {",
+							"    var data = pm.response.json().data;",
+							"    pm.expect(data.id).to.not.eql(\"\");",
+							"});",
+							"",
+							"pm.test(\"Validate data.name value\", () => {",
+							"    const {data} = pm.response.json();",
+							"    pm.expect(data.name).to.not.eql(\"\");",
+							"});",
+							"",
+							"pm.test(\"Validate data.email value\", function () {",
+							"    var data = pm.response.json().data;",
+							"    pm.expect(data.email).to.not.eql(\"\");",
+							"});",
+							"",
+							"pm.test(\"Validate token.token value\", function () {",
+							"    var meta = pm.response.json().meta;",
+							"    pm.expect(meta.token).to.not.eql(\"\")",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate token.verification_token value\", function () {",
+							"    var meta = pm.response.json().meta;",
+							"    pm.expect(meta.verification_token).to.not.eql(\"\")",
+							"});",
+							"",
+							"var meta = pm.response.json().meta;",
+							"postman.setEnvironmentVariable(\"token\", meta.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8888/api/v1/users/850c6f75-4592-4665-97f1-21c30f633f6e",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"850c6f75-4592-4665-97f1-21c30f633f6e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2d9a13ef-dcac-4703-8917-91acd0c66aa6",
+						"exec": [
+							"pm.test(\"Validate data.id value\", function () {",
+							"    var data = pm.response.json().data;",
+							"    pm.expect(data.id).to.not.eql(\"\");",
+							"});",
+							"",
+							"pm.test(\"Validate data.name value\", () => {",
+							"    const {data} = pm.response.json();",
+							"    pm.expect(data.name).to.not.eql(\"\");",
+							"});",
+							"",
+							"pm.test(\"Validate data.email value\", function () {",
+							"    var data = pm.response.json().data;",
+							"    pm.expect(data.email).to.not.eql(\"\");",
+							"});",
+							"",
+							"pm.test(\"Validate token.token value\", function () {",
+							"    var meta = pm.response.json().meta;",
+							"    pm.expect(meta.token).to.not.eql(\"\")",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate token.verification_token value\", function () {",
+							"    var meta = pm.response.json().meta;",
+							"    pm.expect(meta.verification_token).to.not.eql(\"\")",
+							"});",
+							"",
+							"var meta = pm.response.json().meta;",
+							"postman.setEnvironmentVariable(\"token\", meta.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"user\": {\n\t\t\"name\": \"papa\",\n\t\t\"email\": \"pepe@gmail.com\",\n\t\t\"password\": \"123\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8888/api/v1/users/f68e16f1-db43-463c-9a21-8550ca8ad21e",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"f68e16f1-db43-463c-9a21-8550ca8ad21e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5025/api/v1/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5025",
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				},
+				"description": "list all users"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
